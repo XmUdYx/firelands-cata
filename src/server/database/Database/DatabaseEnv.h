@@ -25,6 +25,7 @@
 #include "Implementation/CharacterDatabase.h"
 #include "Implementation/WorldDatabase.h"
 #include "Implementation/HotfixDatabase.h"
+#include "Implementation/PlayerbotsDatabase.h"
 
 #include "Field.h"
 #include "PreparedStatement.h"
@@ -40,5 +41,7 @@ FC_DATABASE_API extern DatabaseWorkerPool<CharacterDatabaseConnection> Character
 FC_DATABASE_API extern DatabaseWorkerPool<LoginDatabaseConnection> LoginDatabase;
 /// Accessor to the hotfix database
 FC_DATABASE_API extern DatabaseWorkerPool<HotfixDatabaseConnection> HotfixDatabase;
+/// Accessor to the playerbots module database
+FC_DATABASE_API extern DatabaseWorkerPool<PlayerbotsDatabaseConnection> PlayerbotsDatabase;
 
 #endif

@@ -235,6 +235,9 @@ void WorldSession::SendPacket(WorldPacket const *packet,
   }
 
   if (!m_Socket) {
+    if (_headlessBotSession)
+      return;
+
     LOG_ERROR(
         "network.opcode",
         "Prevented sending of %s to non existent socket to %s",
@@ -346,7 +349,8 @@ bool WorldSession::Update(uint32 diff, PacketFilter &updater) {
 
   ///- Before we process anything:
   /// If necessary, kick the player from the character select screen
-  if (IsConnectionIdle() &&
+  /// (headless/server-side sessions have no socket — never dereference m_Socket)
+  if (m_Socket && IsConnectionIdle() &&
       !HasPermission(rbac::RBAC_PERM_IGNORE_IDLE_CONNECTION))
     m_Socket->CloseSocket();
 
@@ -542,8 +546,14 @@ bool WorldSession::Update(uint32 diff, PacketFilter &updater) {
       }
     }
 
-    if (!m_Socket)
-      return false;  // Will remove this session from the world session map
+    if (!m_Socket) {
+      if (_headlessBotSession &&
+          (GetPlayer() || PlayerLoading() || !_queuedServerSideCharacterGuid.IsEmpty()))
+      {
+        // keep headless session until bootstrap + login complete (or logout)
+      } else
+        return false;  // Will remove this session from the world session map
+    }
   }
 
   return true;
@@ -715,6 +725,14 @@ void WorldSession::KickPlayer() {
       forceExit = true;
     }
   }
+}
+
+void WorldSession::SetHeadlessBotSession(bool enabled) {
+  _headlessBotSession = enabled;
+}
+
+void WorldSession::QueueServerSideCharacterLogin(ObjectGuid characterGuid) {
+  _queuedServerSideCharacterGuid = characterGuid;
 }
 
 void WorldSession::SendNotification(const char *format, ...) {
@@ -1226,6 +1244,7 @@ void WorldSession::InitializeSession() {
   std::shared_ptr<AccountInfoQueryHolderPerRealm> realmHolder =
       std::make_shared<AccountInfoQueryHolderPerRealm>();
   if (!realmHolder->Initialize(GetAccountId())) {
+    _queuedServerSideCharacterGuid.Clear();
     SendAuthResponse(AUTH_SYSTEM_ERROR, false);
     return;
   }
@@ -1256,6 +1275,15 @@ void WorldSession::InitializeSessionCallback(
   SendAddonsInfo();
   SendClientCacheVersion(sWorld->getIntConfig(CONFIG_CLIENTCACHE_VERSION));
   SendTutorialsData();
+
+  if (!_queuedServerSideCharacterGuid.IsEmpty()) {
+    ObjectGuid const loginGuid = _queuedServerSideCharacterGuid;
+    _queuedServerSideCharacterGuid.Clear();
+    if (!StartServerSideCharacterLogin(loginGuid))
+      LOG_ERROR("network",
+                "Headless session failed to start character login for account %u, guid %s",
+                GetAccountId(), loginGuid.ToString().c_str());
+  }
 }
 
 rbac::RBACData *WorldSession::GetRBACData() { return _RBACData; }

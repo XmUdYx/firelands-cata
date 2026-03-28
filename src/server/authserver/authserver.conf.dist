@@ -182,7 +182,7 @@ IPLocationFile = ""
 #                                                                           Unix/Linux)
 #        Default:     "127.0.0.1;3306;firelands;firelands;firelands_auth"
 
-LoginDatabaseInfo = "127.0.0.1;3306;firelands;firelands;firelands_auth"
+LoginDatabaseInfo = "127.0.0.1;3306;root;acore;firelands_auth"
 
 #
 #    LoginDatabase.WorkerThreads

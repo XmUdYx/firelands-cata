@@ -101,6 +101,7 @@ LogsDir = ""
 #                     "127.0.0.1;3306;firelands;firelands;world"      - (WorldDatabaseInfo)
 #                     "127.0.0.1;3306;firelands;firelands;characters" - (CharacterDatabaseInfo)
 #                     "127.0.0.1;3306;firelands;firelands;hotfixes"   - (HotfixDatabaseInfo)
+#                     "127.0.0.1;3306;firelands;firelands;playerbots" - (PlayerbotsDatabaseInfo)
 #
 #    Don't change hostname unless you are hosting mysql on a different machine, if you need help
 #    with configuration allowing to connect from diferent machine than the one running server
@@ -108,10 +109,11 @@ LogsDir = ""
 #    Don't open port on firewall to external connections (it belongs to mysql, not to wow server).
 #    The username you choose must have permisions to create/alter/rename tables.
 
-LoginDatabaseInfo     = "127.0.0.1;3306;firelands;firelands;firelands_auth"
-WorldDatabaseInfo     = "127.0.0.1;3306;firelands;firelands;firelands_world"
-CharacterDatabaseInfo = "127.0.0.1;3306;firelands;firelands;firelands_characters"
-HotfixDatabaseInfo    = "127.0.0.1;3306;firelands;firelands;firelands_hotfixes"
+LoginDatabaseInfo     = "127.0.0.1;3306;root;acore;firelands_auth"
+WorldDatabaseInfo     = "127.0.0.1;3306;root;acore;firelands_world"
+CharacterDatabaseInfo = "127.0.0.1;3306;root;acore;firelands_characters"
+HotfixDatabaseInfo    = "127.0.0.1;3306;root;acore;firelands_hotfixes"
+PlayerbotsDatabaseInfo = "127.0.0.1;3306;root;acore;firelands_playerbots"
 
 #
 #    LoginDatabase.WorkerThreads
@@ -124,11 +126,13 @@ HotfixDatabaseInfo    = "127.0.0.1;3306;firelands;firelands;firelands_hotfixes"
 #                     1 - (WorldDatabase.WorkerThreads)
 #                     1 - (CharacterDatabase.WorkerThreads)
 #                     1 - (HotfixDatabase.WorkerThreads)
+#                     1 - (PlayerbotsDatabase.WorkerThreads)
 
 LoginDatabase.WorkerThreads     = 1
 WorldDatabase.WorkerThreads     = 1
 CharacterDatabase.WorkerThreads = 1
 HotfixDatabase.WorkerThreads    = 1
+PlayerbotsDatabase.WorkerThreads = 1
 
 #
 #    LoginDatabase.SynchThreads
@@ -143,6 +147,7 @@ LoginDatabase.SynchThreads     = 1
 WorldDatabase.SynchThreads     = 1
 CharacterDatabase.SynchThreads = 2
 HotfixDatabase.SynchThreads    = 1
+PlayerbotsDatabase.SynchThreads = 1
 
 #
 #    MaxPingTime
@@ -1320,12 +1325,13 @@ CacheDataQueries = 1
 #           DATABASE_CHARACTER = 2, // Character database
 #           DATABASE_WORLD     = 4, // World database
 #           DATABASE_HOTFIX    = 8, // Hotfixes database
+#           DATABASE_PLAYERBOTS = 16, // Playerbots module database
 #
-#        Default:     15 - (All enabled)
+#        Default:     31 - (All enabled)
 #                     4  - (Enable world only)
 #                     0  - (All Disabled)
 
-Updates.EnableDatabases = 15
+Updates.EnableDatabases = 31
 
 #
 #    Updates.AutoSetup
@@ -1333,7 +1339,7 @@ Updates.EnableDatabases = 15
 #        Default:     1 - (Enabled)
 #                     0 - (Disabled)
 
-Updates.AutoSetup   = 0
+Updates.AutoSetup   = 1
 
 #
 #    Updates.Redundancy

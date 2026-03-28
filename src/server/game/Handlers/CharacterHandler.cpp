@@ -321,6 +321,26 @@ void WorldSession::HandleCharEnumOpcode(WorldPackets::Character::EnumCharacters&
     _queryProcessor.AddCallback(CharacterDatabase.AsyncQuery(stmt).WithPreparedCallback(std::bind(&WorldSession::HandleCharEnum, this, std::placeholders::_1)));
 }
 
+CharacterCreateInfo CharacterCreateInfo::CreateForInternalTool(std::string name, uint8 race,
+                                                               uint8 class_, uint8 gender,
+                                                               uint8 skin, uint8 face,
+                                                               uint8 hairStyle, uint8 hairColor,
+                                                               uint8 facialHair)
+{
+    CharacterCreateInfo info;
+    info.Name = std::move(name);
+    info.Race = race;
+    info.Class = class_;
+    info.Gender = gender;
+    info.Skin = skin;
+    info.Face = face;
+    info.HairStyle = hairStyle;
+    info.HairColor = hairColor;
+    info.FacialHair = facialHair;
+    info.OutfitId = 0;
+    return info;
+}
+
 void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
 {
     std::shared_ptr<CharacterCreateInfo> createInfo = std::make_shared<CharacterCreateInfo>();
@@ -804,6 +824,19 @@ void WorldSession::HandleContinuePlayerLogin()
     }
 
     AddQueryHolderCallback(CharacterDatabase.DelayQueryHolder(holder)).AfterComplete([this](SQLQueryHolderBase const& holder) { HandlePlayerLogin(static_cast<LoginQueryHolder const&>(holder)); });
+}
+
+bool WorldSession::StartServerSideCharacterLogin(ObjectGuid characterGuid)
+{
+    if (characterGuid.IsEmpty() || !characterGuid.IsPlayer())
+        return false;
+    if (PlayerLoading() || GetPlayer())
+        return false;
+
+    _legitCharacters.insert(characterGuid);
+    m_playerLoading = characterGuid;
+    HandleContinuePlayerLogin();
+    return true;
 }
 
 void WorldSession::AbortLogin(WorldPackets::Character::LoginFailureReason reason)

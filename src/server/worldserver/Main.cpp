@@ -619,7 +619,11 @@ bool StartDB()
 
     // Load databases
     DatabaseLoader loader("server.worldserver", DatabaseLoader::DATABASE_NONE, FC_MODULES_LIST);
-    loader.AddDatabase(LoginDatabase, "Login").AddDatabase(CharacterDatabase, "Character").AddDatabase(WorldDatabase, "World").AddDatabase(HotfixDatabase, "Hotfix");
+    loader.AddDatabase(LoginDatabase, "Login")
+        .AddDatabase(CharacterDatabase, "Character")
+        .AddDatabase(WorldDatabase, "World")
+        .AddDatabase(HotfixDatabase, "Hotfix")
+        .AddDatabase(PlayerbotsDatabase, "Playerbots");
 
     if (!loader.Load())
         return false;
@@ -663,6 +667,7 @@ void StopDB()
     WorldDatabase.Close();
     LoginDatabase.Close();
     HotfixDatabase.Close();
+    PlayerbotsDatabase.Close();
 
     MySQL::Library_End();
 }

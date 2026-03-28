@@ -360,6 +360,15 @@ class CharacterCreateInfo {
   friend class WorldSession;
   friend class Player;
 
+ public:
+  /// Fills a create-info payload for server-side tools (e.g. playerbots) without
+  /// parsing a client packet. Not used by normal character creation.
+  static CharacterCreateInfo CreateForInternalTool(std::string name, uint8 race,
+                                                     uint8 class_, uint8 gender,
+                                                     uint8 skin, uint8 face,
+                                                     uint8 hairStyle, uint8 hairColor,
+                                                     uint8 facialHair);
+
  protected:
   /// User specified variables
   std::string Name;
@@ -490,6 +499,17 @@ class FC_GAME_API WorldSession {
 
   void LogoutPlayer(bool save);
   void KickPlayer();
+
+  /// Server-side sessions without a WorldSocket (e.g. playerbots). When enabled:
+  /// outbound packets are dropped instead of error-logging, and Update() keeps the
+  /// session alive while a character is loading, queued for login, or in world.
+  void SetHeadlessBotSession(bool enabled);
+  bool IsHeadlessBotSession() const { return _headlessBotSession; }
+  /// Character GUID to log in after InitializeSession() finishes (uses normal
+  /// HandleContinuePlayerLogin / HandlePlayerLogin path).
+  void QueueServerSideCharacterLogin(ObjectGuid characterGuid);
+  /// Inserts into the char-enum allow-list and starts the async login query holder.
+  bool StartServerSideCharacterLogin(ObjectGuid characterGuid);
 
   void QueuePacket(WorldPacket* new_packet);
   bool Update(uint32 diff, PacketFilter& updater);
@@ -1396,6 +1416,8 @@ class FC_GAME_API WorldSession {
   bool m_inQueue;              // session wait in auth.queue
   ObjectGuid m_playerLoading;  // code processed in LoginPlayer
   bool m_playerLogout;         // code processed in LogoutPlayer
+  bool _headlessBotSession = false;
+  ObjectGuid _queuedServerSideCharacterGuid;
   bool m_playerRecentlyLogout;
   bool m_playerSave;
   LocaleConstant m_sessionDbcLocale;

@@ -128,6 +128,25 @@ template <> std::string DBUpdater<HotfixDatabaseConnection>::GetDBModuleName() {
 
 template <> BaseLocation DBUpdater<HotfixDatabaseConnection>::GetBaseLocationType() { return LOCATION_REPOSITORY; }
 
+// Playerbots database (mod-playerbots-cata and related tooling)
+template <> std::string DBUpdater<PlayerbotsDatabaseConnection>::GetConfigEntry() { return "Updates.Playerbots"; }
+
+template <> std::string DBUpdater<PlayerbotsDatabaseConnection>::GetTableName() { return "Playerbots"; }
+
+template <> std::string DBUpdater<PlayerbotsDatabaseConnection>::GetBaseDirectory()
+{
+    return BuiltInConfig::GetSourceDirectory() + "/data/sql/base/db_playerbots/";
+}
+
+template <> bool DBUpdater<PlayerbotsDatabaseConnection>::IsEnabled(uint32 const updateMask)
+{
+    return (updateMask & DatabaseLoader::DATABASE_PLAYERBOTS) ? true : false;
+}
+
+template <> std::string DBUpdater<PlayerbotsDatabaseConnection>::GetDBModuleName() { return "db-playerbots"; }
+
+template <> BaseLocation DBUpdater<PlayerbotsDatabaseConnection>::GetBaseLocationType() { return LOCATION_REPOSITORY; }
+
 // All
 template <class T> BaseLocation DBUpdater<T>::GetBaseLocationType() { return LOCATION_REPOSITORY; }
 
@@ -467,3 +486,4 @@ template class FC_DATABASE_API DBUpdater<LoginDatabaseConnection>;
 template class FC_DATABASE_API DBUpdater<WorldDatabaseConnection>;
 template class FC_DATABASE_API DBUpdater<CharacterDatabaseConnection>;
 template class FC_DATABASE_API DBUpdater<HotfixDatabaseConnection>;
+template class FC_DATABASE_API DBUpdater<PlayerbotsDatabaseConnection>;
