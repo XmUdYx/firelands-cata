@@ -1,0 +1,69 @@
+###################################################################################################
+# mod-playerbots-cata — worldserver module configuration
+#
+# Copy to configs/mods/mod-playerbots-cata.conf (same directory as other module configs after install
+# or build output) and adjust values. Keys are merged into the global ConfigMgr map.
+#
+# MySQL connection for the dedicated playerbots database is configured in worldserver.conf:
+#   PlayerbotsDatabaseInfo, PlayerbotsDatabase.WorkerThreads, PlayerbotsDatabase.SynchThreads
+# and update mask bit DATABASE_PLAYERBOTS (Updates.EnableDatabases, value 16).
+###################################################################################################
+
+#
+#    Playerbots.Enable
+#        Description: Master switch for the playerbots module (Phase 1: logging and hooks only).
+#        Default:     0 - (disabled)
+
+Playerbots.Enable = 0
+
+#
+#    Playerbots.LogOnStartup
+#        Description: When enabled and Playerbots.Enable is 1, emit a short startup line after the
+#                     world is marked ready.
+#        Default:     1 - (enabled)
+
+Playerbots.LogOnStartup = 1
+
+#
+#    Playerbots.AccountPrefix
+#        Description: ASCII prefix for generated bot login names (AccountMgr enforces max length 16).
+#        Default:     PB
+
+Playerbots.AccountPrefix = PB
+
+#
+#    Playerbots.AccountRandomSuffixLength
+#        Description: Number of random hex digits after the prefix (underscore added if prefix is non-empty).
+#        Default:     8
+
+Playerbots.AccountRandomSuffixLength = 8
+
+#
+#    Playerbots.MaxAccountCreateAttempts
+#        Description: Retries when a generated account name already exists.
+#        Default:     32
+
+Playerbots.MaxAccountCreateAttempts = 32
+
+#
+#    Playerbots.MaxCharacterCreateAttempts
+#        Description: Outer retries for random race/class/name/appearance when creation fails.
+#        Default:     48
+
+Playerbots.MaxCharacterCreateAttempts = 48
+
+#
+#    Playerbots.AutoLoginOnStartup
+#        Description: After world startup (short delay), log in every active row from
+#                     playerbots_bot (status=2, character_guid set). Use 0 for manual
+#                     `.playerbots login all` only (safer on dev realms).
+#        Default:     0 - (disabled)
+
+Playerbots.AutoLoginOnStartup = 0
+
+#
+#    Playerbots.DevBatchMax
+#        Description: Maximum count for `.playerbots batch <n>` (dev/test safety).
+#        Default:     50  (hard-clamped 1..500 in code)
+
+Playerbots.DevBatchMax = 50
