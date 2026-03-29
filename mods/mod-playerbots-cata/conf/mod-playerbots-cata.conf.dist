@@ -129,3 +129,68 @@ Playerbots.IdleMovement.MaxStepYards = 7
 
 Playerbots.IdleMovement.ChanceFacePct = 35
 Playerbots.IdleMovement.ChanceDistractPct = 25
+
+#
+#    Playerbots.TargetSelection.Enable
+#        Description: Periodically pick a nearby hostile creature (creatures only); sets UNIT_FIELD_TARGET.
+#                     Does not attack. Rescan pauses while the bot is in combat (selection kept).
+#        Default:     1
+
+Playerbots.TargetSelection.Enable = 1
+
+#
+#    Playerbots.TargetSelection.UpdateIntervalMs
+#        Description: Minimum time between rescans per bot (100..5000).
+#        Default:     500
+
+Playerbots.TargetSelection.UpdateIntervalMs = 500
+
+#
+#    Playerbots.TargetSelection.SearchRadiusYards
+#        Description: Grid search radius for candidates (5..60). Nearest valid creature wins.
+#        Default:     25
+
+Playerbots.TargetSelection.SearchRadiusYards = 25
+
+#
+#    Playerbots.TargetSelection.MaxLevelDelta
+#        Description: Skip creatures more than this many levels above the bot (0 = disable check).
+#        Default:     5
+
+Playerbots.TargetSelection.MaxLevelDelta = 5
+
+#
+#    Playerbots.TargetSelection.SkipElites
+#        Description: Skip CREATURE_ELITE_ELITE, RAREELITE, and WORLDBOSS ranks.
+#        Default:     1
+
+Playerbots.TargetSelection.SkipElites = 1
+
+#
+#    Playerbots.TargetSelection.SkipBossFlag / SkipDungeonBoss
+#        Description: Skip CREATURE_TYPE_FLAG_BOSS_MOB and CREATURE_FLAG_EXTRA_DUNGEON_BOSS.
+#        Default:     1 / 1
+
+Playerbots.TargetSelection.SkipBossFlag = 1
+Playerbots.TargetSelection.SkipDungeonBoss = 1
+
+#
+#    Playerbots.TargetSelection.SkipCritters
+#        Description: Skip CREATURE_TYPE_CRITTER.
+#        Default:     1
+
+Playerbots.TargetSelection.SkipCritters = 1
+
+#
+#    Playerbots.TargetSelection.SkipCombatWithOthers
+#        Description: Skip creatures in combat with a unit that is not this bot (reduces steal-tag pulls).
+#        Default:     1
+
+Playerbots.TargetSelection.SkipCombatWithOthers = 1
+
+#
+#    Playerbots.TargetSelection.RequireLos
+#        Description: Require line of sight to the creature (stricter; may reduce valid targets).
+#        Default:     0
+
+Playerbots.TargetSelection.RequireLos = 0

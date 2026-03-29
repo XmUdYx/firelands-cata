@@ -17,6 +17,7 @@
 
 #include "BotIdleMovementService.h"
 #include "BotLoginCoordinator.h"
+#include "BotTargetSelectionService.h"
 #include "PlayerbotsConfig.h"
 #include "PlayerbotsTalentBuildStore.h"
 
@@ -50,6 +51,7 @@ public:
             return;
 
         Playerbots::BotIdleMovementService::Instance().OnPlayerLogout(player);
+        Playerbots::BotTargetSelectionService::Instance().OnPlayerLogout(player);
         Playerbots::BotLoginCoordinator::Instance().UnregisterManagedBot(player->GetSession()->GetAccountId());
     }
 
@@ -57,6 +59,7 @@ public:
     {
         if (!Playerbots::Config::IsEnabled())
             return;
+        Playerbots::BotTargetSelectionService::Instance().OnPlayerUpdate(player, diff);
         Playerbots::BotIdleMovementService::Instance().OnPlayerUpdate(player, diff);
     }
 };

@@ -47,6 +47,17 @@ float Config::_idleMaxStepYards = 7.0f;
 uint32 Config::_idleChanceFacePct = 35;
 uint32 Config::_idleChanceDistractPct = 25;
 
+bool Config::_targetSelectionEnabled = true;
+uint32 Config::_targetSelectionUpdateIntervalMs = 500;
+float Config::_targetSelectionSearchRadius = 25.0f;
+uint8 Config::_targetSelectionMaxLevelDelta = 5;
+bool Config::_targetSelectionSkipElites = true;
+bool Config::_targetSelectionSkipBossFlag = true;
+bool Config::_targetSelectionSkipDungeonBoss = true;
+bool Config::_targetSelectionSkipCritters = true;
+bool Config::_targetSelectionSkipCombatWithOthers = true;
+bool Config::_targetSelectionRequireLos = false;
+
 void Config::Reload()
 {
     _enabled = sConfigMgr->GetBoolDefault("Playerbots.Enable", false);
@@ -115,6 +126,28 @@ void Config::Reload()
         _idleChanceDistractPct = 100;
     if (_idleChanceFacePct + _idleChanceDistractPct > 100)
         _idleChanceDistractPct = 100 - _idleChanceFacePct;
+
+    _targetSelectionEnabled = sConfigMgr->GetBoolDefault("Playerbots.TargetSelection.Enable", true);
+    _targetSelectionUpdateIntervalMs = sConfigMgr->GetIntDefault("Playerbots.TargetSelection.UpdateIntervalMs", 500);
+    _targetSelectionSearchRadius = sConfigMgr->GetFloatDefault("Playerbots.TargetSelection.SearchRadiusYards", 25.0f);
+    _targetSelectionMaxLevelDelta = static_cast<uint8>(sConfigMgr->GetIntDefault("Playerbots.TargetSelection.MaxLevelDelta", 5));
+    _targetSelectionSkipElites = sConfigMgr->GetBoolDefault("Playerbots.TargetSelection.SkipElites", true);
+    _targetSelectionSkipBossFlag = sConfigMgr->GetBoolDefault("Playerbots.TargetSelection.SkipBossFlag", true);
+    _targetSelectionSkipDungeonBoss = sConfigMgr->GetBoolDefault("Playerbots.TargetSelection.SkipDungeonBoss", true);
+    _targetSelectionSkipCritters = sConfigMgr->GetBoolDefault("Playerbots.TargetSelection.SkipCritters", true);
+    _targetSelectionSkipCombatWithOthers = sConfigMgr->GetBoolDefault("Playerbots.TargetSelection.SkipCombatWithOthers", true);
+    _targetSelectionRequireLos = sConfigMgr->GetBoolDefault("Playerbots.TargetSelection.RequireLos", false);
+
+    if (_targetSelectionUpdateIntervalMs < 100)
+        _targetSelectionUpdateIntervalMs = 100;
+    if (_targetSelectionUpdateIntervalMs > 5000)
+        _targetSelectionUpdateIntervalMs = 5000;
+    if (_targetSelectionSearchRadius < 5.0f)
+        _targetSelectionSearchRadius = 5.0f;
+    if (_targetSelectionSearchRadius > 60.0f)
+        _targetSelectionSearchRadius = 60.0f;
+    if (_targetSelectionMaxLevelDelta > 20)
+        _targetSelectionMaxLevelDelta = 20;
 }
 
 bool Config::IsEnabled()
@@ -220,5 +253,55 @@ uint32 Config::GetIdleChanceFacePct()
 uint32 Config::GetIdleChanceDistractPct()
 {
     return _idleChanceDistractPct;
+}
+
+bool Config::IsTargetSelectionEnabled()
+{
+    return _targetSelectionEnabled;
+}
+
+uint32 Config::GetTargetSelectionUpdateIntervalMs()
+{
+    return _targetSelectionUpdateIntervalMs;
+}
+
+float Config::GetTargetSelectionSearchRadius()
+{
+    return _targetSelectionSearchRadius;
+}
+
+uint8 Config::GetTargetSelectionMaxLevelDelta()
+{
+    return _targetSelectionMaxLevelDelta;
+}
+
+bool Config::IsTargetSelectionSkipElites()
+{
+    return _targetSelectionSkipElites;
+}
+
+bool Config::IsTargetSelectionSkipBossFlag()
+{
+    return _targetSelectionSkipBossFlag;
+}
+
+bool Config::IsTargetSelectionSkipDungeonBoss()
+{
+    return _targetSelectionSkipDungeonBoss;
+}
+
+bool Config::IsTargetSelectionSkipCritters()
+{
+    return _targetSelectionSkipCritters;
+}
+
+bool Config::IsTargetSelectionSkipCombatWithOthers()
+{
+    return _targetSelectionSkipCombatWithOthers;
+}
+
+bool Config::IsTargetSelectionRequireLos()
+{
+    return _targetSelectionRequireLos;
 }
 } // namespace Playerbots

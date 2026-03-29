@@ -58,6 +58,18 @@ public:
     static uint32 GetIdleChanceFacePct();
     static uint32 GetIdleChanceDistractPct();
 
+    /// Phase 2: simple hostile creature target selection (no combat rotation).
+    static bool IsTargetSelectionEnabled();
+    static uint32 GetTargetSelectionUpdateIntervalMs();
+    static float GetTargetSelectionSearchRadius();
+    static uint8 GetTargetSelectionMaxLevelDelta();
+    static bool IsTargetSelectionSkipElites();
+    static bool IsTargetSelectionSkipBossFlag();
+    static bool IsTargetSelectionSkipDungeonBoss();
+    static bool IsTargetSelectionSkipCritters();
+    static bool IsTargetSelectionSkipCombatWithOthers();
+    static bool IsTargetSelectionRequireLos();
+
 private:
     static bool _enabled;
     static bool _logOnStartup;
@@ -81,6 +93,17 @@ private:
     static float _idleMaxStepYards;
     static uint32 _idleChanceFacePct;
     static uint32 _idleChanceDistractPct;
+
+    static bool _targetSelectionEnabled;
+    static uint32 _targetSelectionUpdateIntervalMs;
+    static float _targetSelectionSearchRadius;
+    static uint8 _targetSelectionMaxLevelDelta;
+    static bool _targetSelectionSkipElites;
+    static bool _targetSelectionSkipBossFlag;
+    static bool _targetSelectionSkipDungeonBoss;
+    static bool _targetSelectionSkipCritters;
+    static bool _targetSelectionSkipCombatWithOthers;
+    static bool _targetSelectionRequireLos;
 };
 } // namespace Playerbots
 
