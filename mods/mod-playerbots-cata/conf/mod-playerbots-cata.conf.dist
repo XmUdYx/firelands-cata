@@ -67,3 +67,65 @@ Playerbots.AutoLoginOnStartup = 0
 #        Default:     50  (hard-clamped 1..500 in code)
 
 Playerbots.DevBatchMax = 50
+
+#
+#    Playerbots.IdleMovement.Enable
+#        Description: Random idle / short nearby wander for managed headless bots (no combat AI).
+#        Default:     1 - (enabled)
+
+Playerbots.IdleMovement.Enable = 1
+
+#
+#    Playerbots.IdleMovement.UpdateIntervalMs
+#        Description: How often the idle controller runs logic per bot (throttle; not packet rate).
+#        Default:     250  (clamped 100..2000)
+
+Playerbots.IdleMovement.UpdateIntervalMs = 250
+
+#
+#    Playerbots.IdleMovement.MinActionDelayMs / MaxActionDelayMs
+#        Description: Random delay after a passive action (facing) before the next idle decision.
+#        Default:     4000 / 14000
+
+Playerbots.IdleMovement.MinActionDelayMs = 4000
+Playerbots.IdleMovement.MaxActionDelayMs = 14000
+
+#
+#    Playerbots.IdleMovement.PostMovePauseMinMs / PostMovePauseMaxMs
+#        Description: Pause after finishing a short wander spline before the next decision.
+#        Default:     2500 / 8000
+
+Playerbots.IdleMovement.PostMovePauseMinMs = 2500
+Playerbots.IdleMovement.PostMovePauseMaxMs = 8000
+
+#
+#    Playerbots.IdleMovement.DistractMinMs / DistractMaxMs
+#        Description: Duration for MoveDistract (stand / look-around idle).
+#        Default:     2500 / 6000
+
+Playerbots.IdleMovement.DistractMinMs = 2500
+Playerbots.IdleMovement.DistractMaxMs = 6000
+
+#
+#    Playerbots.IdleMovement.WanderRadiusYards
+#        Description: Max horizontal distance from the wander anchor (re-anchored after each walk).
+#        Default:     12  (clamped 3..40)
+
+Playerbots.IdleMovement.WanderRadiusYards = 12
+
+#
+#    Playerbots.IdleMovement.MinStepYards / MaxStepYards
+#        Description: Length of each random relocation (2D from anchor). Max is clamped to radius.
+#        Default:     2 / 7
+
+Playerbots.IdleMovement.MinStepYards = 2
+Playerbots.IdleMovement.MaxStepYards = 7
+
+#
+#    Playerbots.IdleMovement.ChanceFacePct / ChanceDistractPct
+#        Description: On each idle tick, probability weights (0..100). Remainder = try short walk.
+#                     If face + distract > 100, distract is reduced in code.
+#        Default:     35 / 25
+
+Playerbots.IdleMovement.ChanceFacePct = 35
+Playerbots.IdleMovement.ChanceDistractPct = 25

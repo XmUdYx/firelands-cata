@@ -33,6 +33,20 @@ uint32 Config::_maxCharacterCreateAttempts = 48;
 bool Config::_autoLoginOnStartup = false;
 uint32 Config::_devBatchMax = 50;
 
+bool Config::_idleMovementEnabled = true;
+uint32 Config::_idleUpdateIntervalMs = 250;
+uint32 Config::_idleMinActionDelayMs = 4000;
+uint32 Config::_idleMaxActionDelayMs = 14000;
+uint32 Config::_idlePostMovePauseMinMs = 2500;
+uint32 Config::_idlePostMovePauseMaxMs = 8000;
+uint32 Config::_idleDistractMinMs = 2500;
+uint32 Config::_idleDistractMaxMs = 6000;
+float Config::_idleWanderRadiusYards = 12.0f;
+float Config::_idleMinStepYards = 2.0f;
+float Config::_idleMaxStepYards = 7.0f;
+uint32 Config::_idleChanceFacePct = 35;
+uint32 Config::_idleChanceDistractPct = 25;
+
 void Config::Reload()
 {
     _enabled = sConfigMgr->GetBoolDefault("Playerbots.Enable", false);
@@ -54,6 +68,53 @@ void Config::Reload()
         _devBatchMax = 1;
     if (_devBatchMax > 500)
         _devBatchMax = 500;
+
+    _idleMovementEnabled = sConfigMgr->GetBoolDefault("Playerbots.IdleMovement.Enable", true);
+    _idleUpdateIntervalMs = sConfigMgr->GetIntDefault("Playerbots.IdleMovement.UpdateIntervalMs", 250);
+    _idleMinActionDelayMs = sConfigMgr->GetIntDefault("Playerbots.IdleMovement.MinActionDelayMs", 4000);
+    _idleMaxActionDelayMs = sConfigMgr->GetIntDefault("Playerbots.IdleMovement.MaxActionDelayMs", 14000);
+    _idlePostMovePauseMinMs = sConfigMgr->GetIntDefault("Playerbots.IdleMovement.PostMovePauseMinMs", 2500);
+    _idlePostMovePauseMaxMs = sConfigMgr->GetIntDefault("Playerbots.IdleMovement.PostMovePauseMaxMs", 8000);
+    _idleDistractMinMs = sConfigMgr->GetIntDefault("Playerbots.IdleMovement.DistractMinMs", 2500);
+    _idleDistractMaxMs = sConfigMgr->GetIntDefault("Playerbots.IdleMovement.DistractMaxMs", 6000);
+    _idleWanderRadiusYards = sConfigMgr->GetFloatDefault("Playerbots.IdleMovement.WanderRadiusYards", 12.0f);
+    _idleMinStepYards = sConfigMgr->GetFloatDefault("Playerbots.IdleMovement.MinStepYards", 2.0f);
+    _idleMaxStepYards = sConfigMgr->GetFloatDefault("Playerbots.IdleMovement.MaxStepYards", 7.0f);
+    _idleChanceFacePct = sConfigMgr->GetIntDefault("Playerbots.IdleMovement.ChanceFacePct", 35);
+    _idleChanceDistractPct = sConfigMgr->GetIntDefault("Playerbots.IdleMovement.ChanceDistractPct", 25);
+
+    if (_idleUpdateIntervalMs < 100)
+        _idleUpdateIntervalMs = 100;
+    if (_idleUpdateIntervalMs > 2000)
+        _idleUpdateIntervalMs = 2000;
+    if (_idleMinActionDelayMs < 500)
+        _idleMinActionDelayMs = 500;
+    if (_idleMaxActionDelayMs < _idleMinActionDelayMs)
+        _idleMaxActionDelayMs = _idleMinActionDelayMs + 1000;
+    if (_idlePostMovePauseMinMs < 500)
+        _idlePostMovePauseMinMs = 500;
+    if (_idlePostMovePauseMaxMs < _idlePostMovePauseMinMs)
+        _idlePostMovePauseMaxMs = _idlePostMovePauseMinMs + 500;
+    if (_idleDistractMinMs < 1000)
+        _idleDistractMinMs = 1000;
+    if (_idleDistractMaxMs < _idleDistractMinMs)
+        _idleDistractMaxMs = _idleDistractMinMs + 500;
+    if (_idleWanderRadiusYards < 3.0f)
+        _idleWanderRadiusYards = 3.0f;
+    if (_idleWanderRadiusYards > 40.0f)
+        _idleWanderRadiusYards = 40.0f;
+    if (_idleMinStepYards < 0.5f)
+        _idleMinStepYards = 0.5f;
+    if (_idleMaxStepYards < _idleMinStepYards)
+        _idleMaxStepYards = _idleMinStepYards + 0.5f;
+    if (_idleMaxStepYards > _idleWanderRadiusYards)
+        _idleMaxStepYards = _idleWanderRadiusYards;
+    if (_idleChanceFacePct > 100)
+        _idleChanceFacePct = 100;
+    if (_idleChanceDistractPct > 100)
+        _idleChanceDistractPct = 100;
+    if (_idleChanceFacePct + _idleChanceDistractPct > 100)
+        _idleChanceDistractPct = 100 - _idleChanceFacePct;
 }
 
 bool Config::IsEnabled()
@@ -94,5 +155,70 @@ bool Config::AutoLoginOnStartup()
 uint32 Config::GetDevBatchMax()
 {
     return _devBatchMax;
+}
+
+bool Config::IsIdleMovementEnabled()
+{
+    return _idleMovementEnabled;
+}
+
+uint32 Config::GetIdleUpdateIntervalMs()
+{
+    return _idleUpdateIntervalMs;
+}
+
+uint32 Config::GetIdleMinActionDelayMs()
+{
+    return _idleMinActionDelayMs;
+}
+
+uint32 Config::GetIdleMaxActionDelayMs()
+{
+    return _idleMaxActionDelayMs;
+}
+
+uint32 Config::GetIdlePostMovePauseMinMs()
+{
+    return _idlePostMovePauseMinMs;
+}
+
+uint32 Config::GetIdlePostMovePauseMaxMs()
+{
+    return _idlePostMovePauseMaxMs;
+}
+
+uint32 Config::GetIdleDistractMinMs()
+{
+    return _idleDistractMinMs;
+}
+
+uint32 Config::GetIdleDistractMaxMs()
+{
+    return _idleDistractMaxMs;
+}
+
+float Config::GetIdleWanderRadiusYards()
+{
+    return _idleWanderRadiusYards;
+}
+
+float Config::GetIdleMinStepYards()
+{
+    return _idleMinStepYards;
+}
+
+float Config::GetIdleMaxStepYards()
+{
+    return _idleMaxStepYards;
+}
+
+uint32 Config::GetIdleChanceFacePct()
+{
+    return _idleChanceFacePct;
+}
+
+uint32 Config::GetIdleChanceDistractPct()
+{
+    return _idleChanceDistractPct;
 }
 } // namespace Playerbots

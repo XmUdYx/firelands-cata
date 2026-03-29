@@ -43,6 +43,21 @@ public:
     /// Hard cap for `.playerbots batch` (dev safety).
     static uint32 GetDevBatchMax();
 
+    /// Phase 2: idle / random nearby wander (managed headless bots only).
+    static bool IsIdleMovementEnabled();
+    static uint32 GetIdleUpdateIntervalMs();
+    static uint32 GetIdleMinActionDelayMs();
+    static uint32 GetIdleMaxActionDelayMs();
+    static uint32 GetIdlePostMovePauseMinMs();
+    static uint32 GetIdlePostMovePauseMaxMs();
+    static uint32 GetIdleDistractMinMs();
+    static uint32 GetIdleDistractMaxMs();
+    static float GetIdleWanderRadiusYards();
+    static float GetIdleMinStepYards();
+    static float GetIdleMaxStepYards();
+    static uint32 GetIdleChanceFacePct();
+    static uint32 GetIdleChanceDistractPct();
+
 private:
     static bool _enabled;
     static bool _logOnStartup;
@@ -52,6 +67,20 @@ private:
     static uint32 _maxCharacterCreateAttempts;
     static bool _autoLoginOnStartup;
     static uint32 _devBatchMax;
+
+    static bool _idleMovementEnabled;
+    static uint32 _idleUpdateIntervalMs;
+    static uint32 _idleMinActionDelayMs;
+    static uint32 _idleMaxActionDelayMs;
+    static uint32 _idlePostMovePauseMinMs;
+    static uint32 _idlePostMovePauseMaxMs;
+    static uint32 _idleDistractMinMs;
+    static uint32 _idleDistractMaxMs;
+    static float _idleWanderRadiusYards;
+    static float _idleMinStepYards;
+    static float _idleMaxStepYards;
+    static uint32 _idleChanceFacePct;
+    static uint32 _idleChanceDistractPct;
 };
 } // namespace Playerbots
 

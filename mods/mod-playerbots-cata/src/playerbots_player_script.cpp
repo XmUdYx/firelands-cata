@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "BotIdleMovementService.h"
 #include "BotLoginCoordinator.h"
 #include "PlayerbotsConfig.h"
 #include "PlayerbotsTalentBuildStore.h"
@@ -48,7 +49,15 @@ public:
         if (!player->GetSession()->IsHeadlessBotSession())
             return;
 
+        Playerbots::BotIdleMovementService::Instance().OnPlayerLogout(player);
         Playerbots::BotLoginCoordinator::Instance().UnregisterManagedBot(player->GetSession()->GetAccountId());
+    }
+
+    void OnUpdate(Player* player, uint32 diff) override
+    {
+        if (!Playerbots::Config::IsEnabled())
+            return;
+        Playerbots::BotIdleMovementService::Instance().OnPlayerUpdate(player, diff);
     }
 };
 } // namespace
