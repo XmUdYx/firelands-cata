@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "BotCombatLoopService.h"
 #include "BotIdleMovementService.h"
 #include "BotLoginCoordinator.h"
 #include "BotTargetSelectionService.h"
@@ -52,6 +53,7 @@ public:
 
         Playerbots::BotIdleMovementService::Instance().OnPlayerLogout(player);
         Playerbots::BotTargetSelectionService::Instance().OnPlayerLogout(player);
+        Playerbots::BotCombatLoopService::Instance().OnPlayerLogout(player);
         Playerbots::BotLoginCoordinator::Instance().UnregisterManagedBot(player->GetSession()->GetAccountId());
     }
 
@@ -60,6 +62,7 @@ public:
         if (!Playerbots::Config::IsEnabled())
             return;
         Playerbots::BotTargetSelectionService::Instance().OnPlayerUpdate(player, diff);
+        Playerbots::BotCombatLoopService::Instance().OnPlayerUpdate(player, diff);
         Playerbots::BotIdleMovementService::Instance().OnPlayerUpdate(player, diff);
     }
 };

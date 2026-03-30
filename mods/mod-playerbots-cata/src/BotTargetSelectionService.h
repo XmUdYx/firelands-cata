@@ -43,6 +43,9 @@ public:
     /// Resolves the creature in the player's map, or nullptr if missing / wrong type.
     Creature* GetPrimaryTargetCreature(Player* player) const;
 
+    /// Clears stored primary target and server selection (after kill / disengage / invalid).
+    void ClearPrimaryTarget(Player* player);
+
 private:
     BotTargetSelectionService() = default;
 

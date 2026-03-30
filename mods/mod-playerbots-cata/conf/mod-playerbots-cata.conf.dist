@@ -194,3 +194,32 @@ Playerbots.TargetSelection.SkipCombatWithOthers = 1
 #        Default:     0
 
 Playerbots.TargetSelection.RequireLos = 0
+
+#
+#    Playerbots.CombatLoop.Enable
+#        Description: When a primary creature target exists, Attack + MoveChase (melee auto-attack via core).
+#                     Disengages on invalid target, death, evade, mount, LOS timeout, max chase distance.
+#        Default:     1
+
+Playerbots.CombatLoop.Enable = 1
+
+#
+#    Playerbots.CombatLoop.UpdateIntervalMs
+#        Description: Combat tick interval per bot (100..2000).
+#        Default:     250
+
+Playerbots.CombatLoop.UpdateIntervalMs = 250
+
+#
+#    Playerbots.CombatLoop.MaxChaseYards
+#        Description: Stop pursuing / drop combat intent if further than this from the target (10..80).
+#        Default:     45
+
+Playerbots.CombatLoop.MaxChaseYards = 45
+
+#
+#    Playerbots.CombatLoop.LosBreakMs
+#        Description: If target has no LOS and is not in melee range, disengage after this many ms (1000..60000).
+#        Default:     8000
+
+Playerbots.CombatLoop.LosBreakMs = 8000

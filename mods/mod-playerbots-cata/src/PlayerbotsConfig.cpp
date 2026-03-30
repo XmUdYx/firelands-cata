@@ -58,6 +58,11 @@ bool Config::_targetSelectionSkipCritters = true;
 bool Config::_targetSelectionSkipCombatWithOthers = true;
 bool Config::_targetSelectionRequireLos = false;
 
+bool Config::_combatLoopEnabled = true;
+uint32 Config::_combatUpdateIntervalMs = 250;
+float Config::_combatMaxChaseYards = 45.0f;
+uint32 Config::_combatLosBreakMs = 8000;
+
 void Config::Reload()
 {
     _enabled = sConfigMgr->GetBoolDefault("Playerbots.Enable", false);
@@ -148,6 +153,24 @@ void Config::Reload()
         _targetSelectionSearchRadius = 60.0f;
     if (_targetSelectionMaxLevelDelta > 20)
         _targetSelectionMaxLevelDelta = 20;
+
+    _combatLoopEnabled = sConfigMgr->GetBoolDefault("Playerbots.CombatLoop.Enable", true);
+    _combatUpdateIntervalMs = sConfigMgr->GetIntDefault("Playerbots.CombatLoop.UpdateIntervalMs", 250);
+    _combatMaxChaseYards = sConfigMgr->GetFloatDefault("Playerbots.CombatLoop.MaxChaseYards", 45.0f);
+    _combatLosBreakMs = sConfigMgr->GetIntDefault("Playerbots.CombatLoop.LosBreakMs", 8000);
+
+    if (_combatUpdateIntervalMs < 100)
+        _combatUpdateIntervalMs = 100;
+    if (_combatUpdateIntervalMs > 2000)
+        _combatUpdateIntervalMs = 2000;
+    if (_combatMaxChaseYards < 10.0f)
+        _combatMaxChaseYards = 10.0f;
+    if (_combatMaxChaseYards > 80.0f)
+        _combatMaxChaseYards = 80.0f;
+    if (_combatLosBreakMs < 1000)
+        _combatLosBreakMs = 1000;
+    if (_combatLosBreakMs > 60000)
+        _combatLosBreakMs = 60000;
 }
 
 bool Config::IsEnabled()
@@ -303,5 +326,25 @@ bool Config::IsTargetSelectionSkipCombatWithOthers()
 bool Config::IsTargetSelectionRequireLos()
 {
     return _targetSelectionRequireLos;
+}
+
+bool Config::IsCombatLoopEnabled()
+{
+    return _combatLoopEnabled;
+}
+
+uint32 Config::GetCombatUpdateIntervalMs()
+{
+    return _combatUpdateIntervalMs;
+}
+
+float Config::GetCombatMaxChaseYards()
+{
+    return _combatMaxChaseYards;
+}
+
+uint32 Config::GetCombatLosBreakMs()
+{
+    return _combatLosBreakMs;
 }
 } // namespace Playerbots

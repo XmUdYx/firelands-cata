@@ -160,6 +160,15 @@ Creature* BotTargetSelectionService::GetPrimaryTargetCreature(Player* player) co
     return ObjectAccessor::GetCreature(*player, g);
 }
 
+void BotTargetSelectionService::ClearPrimaryTarget(Player* player)
+{
+    if (!player)
+        return;
+    BotTargetState& st = _states[player->GetGUID()];
+    st.primaryTarget = ObjectGuid::Empty;
+    player->SetSelection(ObjectGuid::Empty);
+}
+
 void BotTargetSelectionService::ApplySelection(Player* player, ObjectGuid const& targetGuid)
 {
     BotTargetState& st = _states[player->GetGUID()];

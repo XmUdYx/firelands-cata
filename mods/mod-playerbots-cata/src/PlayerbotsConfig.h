@@ -70,6 +70,12 @@ public:
     static bool IsTargetSelectionSkipCombatWithOthers();
     static bool IsTargetSelectionRequireLos();
 
+    /// Phase 2: minimal melee kill loop (MoveChase + Attack; no rotations).
+    static bool IsCombatLoopEnabled();
+    static uint32 GetCombatUpdateIntervalMs();
+    static float GetCombatMaxChaseYards();
+    static uint32 GetCombatLosBreakMs();
+
 private:
     static bool _enabled;
     static bool _logOnStartup;
@@ -104,6 +110,11 @@ private:
     static bool _targetSelectionSkipCritters;
     static bool _targetSelectionSkipCombatWithOthers;
     static bool _targetSelectionRequireLos;
+
+    static bool _combatLoopEnabled;
+    static uint32 _combatUpdateIntervalMs;
+    static float _combatMaxChaseYards;
+    static uint32 _combatLosBreakMs;
 };
 } // namespace Playerbots
 
